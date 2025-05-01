@@ -1,0 +1,7 @@
+servlets\TaskRegisterServlet.class
+Model\User.class
+DAO\TaskDAO.class
+Model\Task.class
+servlets\LoginServlet.class
+servlets\UserRegisterServlet.class
+DAO\UserDAO.class
