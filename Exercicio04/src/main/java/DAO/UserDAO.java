@@ -6,7 +6,7 @@ import Model.User;
 public class UserDAO {
     private String jdbcURL = "jdbc:mysql://localhost:3306/Exercicio4JAVA";
     private String jdbcUsername = "root";
-    private String jdbcPassword = "Pastelaria30!";
+    private String jdbcPassword = "";
 
     private Connection getConnection() throws SQLException {
         return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
