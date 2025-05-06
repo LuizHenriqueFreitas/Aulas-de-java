@@ -14,8 +14,10 @@
 <body>
     <h2>Nova Tarefa</h2>
     <form action="register-task" method="post">
-        <label>Descrição:</label>
+        <label for="description">Descrição:</label>
         <input type="text" name="description" required><br><br>
+        <label for="date">Data:</label><br>
+        <input type="date" name="date" required><br><br>
         <input type="submit" value="Cadastrar">
     </form>
     <br>
