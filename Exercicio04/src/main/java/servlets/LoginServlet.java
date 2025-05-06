@@ -4,9 +4,9 @@ import DAO.UserDAO;
 import Model.User;
 
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
-
 import java.io.IOException;
 
 @WebServlet("/login")
@@ -17,10 +17,10 @@ public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = request.getParameter("username");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        User user = userDAO.getUserByUsernameAndPassword(username, password);
+        User user = userDAO.getUserByUsernameAndPassword(email, password);
 
         if (user != null) {
             HttpSession session = request.getSession();
