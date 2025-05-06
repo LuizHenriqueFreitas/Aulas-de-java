@@ -1,53 +1,55 @@
 package DAO;
 
+import Model.Task;
+import Model.User;
+import utils.DataManager;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import Model.Task;
-
 public class TaskDAO {
-    private String jdbcURL = "jdbc:mysql://localhost:3306/Exercicio4JAVA";
-    private String jdbcUsername = "root";
-    private String jdbcPassword = "";
 
-    private Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(jdbcURL, jdbcUsername, jdbcPassword);
-    }
+    public void create(Task task) {
+        String sql = "INSERT INTO tasks (description, date, user_id) VALUES (?, ?, ?)";
 
-    public boolean insertTask(Task task) {
-        String sql = "INSERT INTO tasks (description, user_id) VALUES (?, ?)";
-
-        try (Connection conn = getConnection();
+        try (Connection conn = DataManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, task.getDescription());
-            stmt.setInt(2, task.getUserId());
-            return stmt.executeUpdate() > 0;
-        } catch (SQLException e) {
+            stmt.setDate(2, new java.sql.Date(task.getDate().getTime()));
+            stmt.setInt(3, task.getUser().getId());
+            stmt.executeUpdate();
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
-    public List<Task> getTasksByUserId(int userId) {
+    public List<Task> findAllByUser(User user) {
         List<Task> tasks = new ArrayList<>();
-        String sql = "SELECT * FROM tasks WHERE user_id = ?";
+        String sql = "SELECT * FROM tasks WHERE user_id = ? ORDER BY date";
 
-        try (Connection conn = getConnection();
+        try (Connection conn = DataManager.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setInt(1, userId);
+
+            stmt.setInt(1, user.getId());
             ResultSet rs = stmt.executeQuery();
 
             while (rs.next()) {
                 Task task = new Task();
                 task.setId(rs.getInt("id"));
                 task.setDescription(rs.getString("description"));
-                task.setUserId(rs.getInt("user_id"));
+                task.setDate(rs.getDate("date"));
+                task.setUser(user);
+
                 tasks.add(task);
             }
-        } catch (SQLException e) {
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
+
         return tasks;
     }
 }
