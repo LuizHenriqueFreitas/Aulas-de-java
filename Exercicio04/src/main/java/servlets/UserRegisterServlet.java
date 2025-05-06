@@ -4,9 +4,8 @@ import DAO.UserDAO;
 import Model.User;
 
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
-
 import java.io.IOException;
 
 @WebServlet("/register-user")
@@ -14,23 +13,17 @@ public class UserRegisterServlet extends HttpServlet {
 
     private UserDAO userDAO = new UserDAO();
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        String username = request.getParameter("username");
+        String name = request.getParameter("name");
+        String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        User user = new User();
-        user.setUsername(username);
-        user.setPassword(password);
+        User user = new User(0, name, email, password);
+        userDao.create(user);
 
-        boolean success = userDAO.insertUser(user);
-
-        if (success) {
-            response.sendRedirect("login.jsp");
-        } else {
-            request.setAttribute("error", "Erro ao cadastrar usuário.");
-            request.getRequestDispatcher("user-register.jsp").forward(request, response);
-        }
+        response.sendRedirect("login.jsp");
     }
 }
