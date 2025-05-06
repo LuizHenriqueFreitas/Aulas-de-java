@@ -1,20 +1,22 @@
 package Model;
 
+import java.util.Date;
+
 public class Task {
     private int id;
     private String description;
-    private int userId;
+    private Date date;
+    private User user;
 
     public Task() {
     }
 
-    public Task(int id, String description, int userId) {
+    public Task(int id, String description, Date date, User user) {
         this.id = id;
         this.description = description;
-        this.userId = userId;
+        this.date = date;
+        this.user = user;
     }
-
-    // Getters e Setters
 
     public int getId() {
         return id;
@@ -32,11 +34,19 @@ public class Task {
         this.description = description;
     }
 
-    public int getUserId() {
-        return userId;
+    public Date getDate() {
+        return date;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
