@@ -5,16 +5,18 @@ import Model.Task;
 import Model.User;
 
 import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
-import jakarta.servlet.annotation.*;
-
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @WebServlet("/register-task")
 public class TaskRegisterServlet extends HttpServlet {
 
     private TaskDAO taskDAO = new TaskDAO();
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -27,19 +29,18 @@ public class TaskRegisterServlet extends HttpServlet {
         }
 
         String description = request.getParameter("description");
+        String dateStr = request.getParameter("date");
+            
+        try {
+            Date date = new SimpleDateFormat("yyyy-MM-dd").parse(dateStr);
+            Task task = new Task(0, description, date, user);
+            taskDao.create(task);
 
-        Task task = new Task();
-        task.setDescription(description);
-        task.setUserId(user.getId());
-
-        boolean success = taskDAO.insertTask(task);
-
-        if (success) {
             response.sendRedirect("home.jsp");
-        } else {
+
+        } catch (Exception e) {
             request.setAttribute("error", "Erro ao cadastrar tarefa.");
-            request.getRequestDispatcher("task-register.jsp").forward(request, response);
+            request.getRequestDispatcher("task-form.jsp").forward(request, response);
         }
     }
 }
-
